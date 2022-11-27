@@ -1,0 +1,16 @@
+numpy
+pydot
+pandas
+black
+matplotlib
+termcolor
+ipdb
+jupyterlab
+mypy
+pandas
+sklearn
+wikipedia
+torch
+tensorflow
+pygraphviz
+graphviz
