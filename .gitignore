@@ -27,3 +27,8 @@ code/solutions
 
 code/make_exercises.sh
 code/exercises/
+
+code/reinforcement_learning/images/value_iteration/*pdf
+code/reinforcement_learning/images/value_iteration_policy/*pdf
+code/solutions/reinforcement_learning/images/value_iteration/*pdf
+code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
