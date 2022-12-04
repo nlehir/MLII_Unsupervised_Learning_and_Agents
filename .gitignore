@@ -32,6 +32,10 @@ code/solutions/reinforcement_learning/images/value_iteration/*pdf
 code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/hierarchical_clustering/clustering/*.pdf
 
+code/hierarchical_clustering/clustering/*.pdf
+
+code/gradients/function_2/*.pdf
+
 code/kde/*.pdf
 
 project/
