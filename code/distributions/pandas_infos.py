@@ -1,4 +1,8 @@
 import pandas as pd
+from sklearn.datasets import load_iris
+
+
+X, y = load_iris()
 
 # Load the data to./ a pandas dataframe
 df = pd.read_csv("./distribution_3.csv")

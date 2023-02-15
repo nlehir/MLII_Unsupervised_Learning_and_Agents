@@ -4,6 +4,7 @@
 
 env/*
 
+
 *__pycache__*
 *mypy_cache*
 .ipynb_checkpoints
@@ -31,6 +32,8 @@ code/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/reinforcement_learning/images/value_iteration/*pdf
 code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/hierarchical_clustering/clustering/*.pdf
+
+code/speed/
 
 code/hierarchical_clustering/clustering/*.pdf
 
