@@ -15,6 +15,7 @@ code/.local/*
 code/__pycache__/*
 code/.bash_history
 code/tags
+code/overfitting/images/*.pdf
 
 code/linear_regression/arch
 
