@@ -22,10 +22,6 @@ def cluster_dataset(nbs_of_iterations: int) -> None:
     y = data[:, 1]
 
     nb_samples = len(x)
-
-    # clean images
-    clean("images")
-
     # we dont initialize the centroids completely randomly
     x_min = min(x)
     x_max = max(x)
@@ -85,7 +81,7 @@ def cluster_dataset(nbs_of_iterations: int) -> None:
 
 def main() -> None:
     nbs_of_iterations = 10
-    clean("images")
+    clean("clusterings")
     cluster_dataset(nbs_of_iterations=nbs_of_iterations)
 
 

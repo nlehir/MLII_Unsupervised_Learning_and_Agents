@@ -100,7 +100,7 @@ def cluster_dataset(nbs_of_iterations: int) -> None:
 
 def main() -> None:
     nbs_of_iterations = 10
-    clean("images")
+    clean("clusterings")
     cluster_dataset(nbs_of_iterations=nbs_of_iterations)
 
 

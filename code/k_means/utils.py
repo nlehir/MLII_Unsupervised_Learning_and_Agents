@@ -32,7 +32,7 @@ def plot_clustering(
     plt.title(title)
     plt.xlabel("x")
     plt.ylabel("y")
-    figpath = os.path.join("images", f"it_{iteration}_{step}.pdf")
+    figpath = os.path.join("clusterings", f"it_{iteration}_{step}.pdf")
     plt.savefig(figpath)
     plt.close("all")
 
