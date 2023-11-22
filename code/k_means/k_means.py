@@ -3,16 +3,16 @@
 """
 import os
 
-import matplotlib.pyplot as plt
 import numpy as np
 
+from utils import plot_clustering, clean
 
-def main(nbs_of_iterations: int) -> None:
+
+def cluster_dataset(nbs_of_iterations: int) -> None:
     """
     perform a k-means algorithm
     with 3 clusters on a simple 2D dataset.
     """
-
     # load the data
     datapath = os.path.join("data", "data.npy")
     data = np.load(datapath)
@@ -21,8 +21,6 @@ def main(nbs_of_iterations: int) -> None:
 
     nb_samples = len(x)
 
-    # clean images
-    clean("images")
 
     # we dont initialize the centroids completely randomly
     x_min = min(x)
@@ -31,17 +29,23 @@ def main(nbs_of_iterations: int) -> None:
     y_max = max(y)
 
     # initialize the centroid positions
-    x_centroids = np.random.uniform(x_min, x_max, 3)
-    y_centroids = np.random.uniform(y_min, y_max, 3)
+    rng = np.random.default_rng()
+    x_centroids = rng.uniform(low=x_min, high=x_max, size=3)
+    y_centroids = rng.uniform(low=y_min, high=y_max, size=3)
     print("initial centroid positions")
-    print(x_centroids, y_centroids)
+    print(f"x_centroids: {x_centroids}")
+    print(f"y_centroids: {y_centroids}")
 
     # randomly assign the centroids
     # here just used to created a datastructure containing the assignments
-    centroids_assignments = np.random.randint(0, 3, nb_samples)
+    centroids_assignments = rng.integers(low=0, high=3, size=nb_samples)
 
     for iteration in range(nbs_of_iterations):
         print(f"\niteration: {iteration}")
+
+        """
+        Non-vectorized version
+        """
         for datapoint in range(nb_samples):
             """
             Find the closest centroid for this point
@@ -49,6 +53,14 @@ def main(nbs_of_iterations: int) -> None:
             """
             pass
 
+        """
+        Vectorized version
+        """
+
+
+        """
+        Assign each sample to a cluster
+        """
         cluster_0 = np.where(centroids_assignments == 0)[0]
         cluster_1 = np.where(centroids_assignments == 1)[0]
         cluster_2 = np.where(centroids_assignments == 2)[0]
@@ -86,45 +98,11 @@ def main(nbs_of_iterations: int) -> None:
         )
 
 
-def plot_clustering(
-    iteration: int,
-    x: np.ndarray,
-    y: np.ndarray,
-    cluster_0: np.ndarray,
-    cluster_1: np.ndarray,
-    cluster_2: np.ndarray,
-    x_centroids,
-    y_centroids,
-    step: str,
-) -> None:
-    """
-    Plot the current state of the clustering
-
-    """
-    plt.plot(
-        x[cluster_0], y[cluster_0], "o", color="darkorange", markersize=3, alpha=0.8
-    )
-    plt.plot(
-        x[cluster_1], y[cluster_1], "o", color="firebrick", markersize=3, alpha=0.8
-    )
-    plt.plot(
-        x[cluster_2], y[cluster_2], "o", color="cornflowerblue", markersize=3, alpha=0.8
-    )
-    plt.plot(x_centroids, y_centroids, "o", color="lime")
-    title = f"update centroids : iteration {iteration} (centroids in green)"
-    plt.title(title)
-    plt.xlabel("x")
-    plt.ylabel("y")
-    figpath = os.path.join("images", f"it_{iteration}_{step}.pdf")
-    plt.savefig(figpath)
-    plt.close("all")
-
-
-def clean(directory):
-    for filename in os.listdir(directory):
-        os.remove(os.path.join(directory, filename))
+def main() -> None:
+    nbs_of_iterations = 10
+    clean("images")
+    cluster_dataset(nbs_of_iterations=nbs_of_iterations)
 
 
 if __name__ == "__main__":
-    nbs_of_iterations = 10
-    main(nbs_of_iterations)
+    main()

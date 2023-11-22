@@ -3,10 +3,12 @@
 """
 
 import csv
+import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.spatial
+from sklearn.cluster import linkage_tree
 
 # open file
 file_name = "addresses.csv"
@@ -35,7 +37,8 @@ for datapoint in range(nb_datapoints):
 plt.title("scatter plot of addresses")
 plt.xlabel("x coordinate")
 plt.ylabel("y coordinate")
-plt.savefig("scatter_plot_manual.pdf")
+fig_path = os.path.join("images", "scatter_plot_manual.pdf")
+plt.savefig(fig_path)
 plt.close()
 
 # second method
@@ -43,14 +46,16 @@ plt.plot(x_coordinates, y_coordinates, "o")
 plt.title("scatter plot of addresses")
 plt.xlabel("x coordinate")
 plt.ylabel("y coordinate")
-plt.savefig("scatter_plot_manual_2.pdf")
+fig_path = os.path.join("images", "scatter_plot_manual_2.pdf")
+plt.savefig(fig_path)
 plt.close()
 
 # third method : matplotlib function
 plt.scatter(x_coordinates, y_coordinates)
 plt.xlabel("x coordinate")
 plt.ylabel("y coordinate")
-plt.savefig("scatter_plot_matplotlib.pdf")
+fig_path = os.path.join("images", "scatter_plot_matplotlib.pdf")
+plt.savefig(fig_path)
 plt.close()
 
 
@@ -70,7 +75,7 @@ distance_matrix = scipy.spatial.distance.squareform(condensed_distance)
 classes = [[i] for i in range(nb_datapoints)]
 
 
-def find_closest_classes(classes: list[list]) -> tuple:
+def find_closest_classes(classes: list[list], linkage: str = "single") -> tuple:
     """
     In the list of classes, find the two closest classes
 
@@ -115,19 +120,14 @@ def distance_between_classes_average_linkage(class_1: list, class_2: list) -> fl
     classes
     """
     min_dist = np.max(distance_matrix)
+    average_distances = min_dist
     """
     add lines here
     """
     return average_distances
 
 
-def define_color(index):
-    int_1 = (3 * index) % 9 + 1
-    int_2 = (3 * index) % 5 + 1
-    int_3 = (3 * index) % 2 + 1
-
-
-def plot_clustering(step: int, classes: list[list]) -> None:
+def plot_clustering(step: int, classes: list[list], linkage: str) -> None:
     """
     Plots the clustering resutls
     """
@@ -136,30 +136,33 @@ def plot_clustering(step: int, classes: list[list]) -> None:
         class_to_plot = classes[index]
         x_coord = x_coordinates[class_to_plot]
         y_coord = y_coordinates[class_to_plot]
-        color = define_color(index)
-        plt.plot(x_coord, y_coord, "o", color=color)
+        plt.plot(x_coord, y_coord, "o")
     plt.title(
-        f"hierarchical clustering\nstep {step}"
-        f"\n{len(classes)} clusters\n"
-        f"{metric} metric"
+        "hierarchical clustering"
+        f"\nstep {step}"
+        f"\n{len(classes)} clusters"
+        f"\n{metric} metric"
+        f"\n{linkage} linkage"
     )
     plt.tight_layout()
-    plt.savefig(f"clustering/clustering_step_{step}.pdf")
+    fig_name = f"{linkage}_linkage_step_{step}.pdf"
+    fig_path = os.path.join("clusterings", fig_name)
+    plt.savefig(fig_path)
     plt.close()
 
 
 def main():
-    """
-    main loop
-    """
     step = 0
+    LINKAGE = "single"
+    print("hierarchical clustering")
+    print(f"use {LINKAGE} linkage")
     while len(classes) > 1:
         print(f"step: {step}")
         step += 1
-        index_1, index_2 = find_closest_classes(classes)
+        index_1, index_2 = find_closest_classes(classes, linkage=LINKAGE)
         classes[index_1] = classes[index_1] + classes[index_2]
         classes.remove(classes[index_2])
-        plot_clustering(step, classes)
+        plot_clustering(step, classes, linkage=LINKAGE)
 
 
 if __name__ == "__main__":

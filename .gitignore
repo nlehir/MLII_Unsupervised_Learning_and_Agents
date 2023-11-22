@@ -5,6 +5,7 @@
 env/*
 
 
+
 *__pycache__*
 *mypy_cache*
 .ipynb_checkpoints
@@ -25,6 +26,9 @@ code/gradients/function_2/*pdf
 classification
 regression
 
+code/arch/
+code/solutions/
+
 code/make_exercises.sh
 code/exercises/
 
@@ -34,9 +38,12 @@ code/solutions/reinforcement_learning/images/value_iteration/*pdf
 code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/hierarchical_clustering/clustering/*.pdf
 
-code/speed/
+code/pca/**/*.pdf
+code/k_means/**/*.pdf
+code/hierarchical_clustering/**/*.pdf
+code/spectral_clustering/**/*.pdf
 
-code/hierarchical_clustering/clustering/*.pdf
+code/speed/
 
 code/gradients/function_2/*.pdf
 

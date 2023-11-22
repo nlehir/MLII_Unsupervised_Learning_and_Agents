@@ -59,6 +59,15 @@ def main():
         classes[index_1] = classes[index_1] + classes[index_2]
         classes.remove(classes[index_2])
         labels = [get_label(i, classes) for i in range(nb_datapoints)]
+        silhouette_score = metrics.silhouette_score(data, labels, metric="euclidean")
+        silhouette_scores.append(silhouette_score)
+        nb_clusters.append(len(classes))
+    plt.plot(nb_clusters[-10:], silhouette_scores[-10:], "o")
+    plt.xlabel("number of clusters")
+    plt.ylabel("silhouette score")
+    plt.title("silhouette scores")
+    plt.savefig("silhouette_scores.pdf")
+    plt.close()
 
 
 if __name__ == "__main__":
