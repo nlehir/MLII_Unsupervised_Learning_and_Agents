@@ -39,6 +39,8 @@ code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/hierarchical_clustering/clustering/*.pdf
 
 code/pca/**/*.pdf
+code/kde/**/*.pdf
+code/kl_divergence/**/*.pdf
 code/k_means/**/*.pdf
 code/hierarchical_clustering/**/*.pdf
 code/spectral_clustering/**/*.pdf
