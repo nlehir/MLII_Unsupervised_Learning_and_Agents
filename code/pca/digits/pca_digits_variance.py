@@ -3,11 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 
-digits = load_digits()
 
-# the data consists in 1797 samples
-# of 8*8 pixels images
+def main() -> None:
+    digits = load_digits()
 
-pca = PCA().fit(digits.data)
+    # the data consists in 1797 samples
+    # of 8*8 pixels images
 
-variance_ratio = pca.explained_variance_ratio_
+    pca = PCA().fit(digits.data)
+
+    variance_ratio = pca.explained_variance_ratio_
+    """
+    Add lines here
+    """
+
+
+if __name__ == "__main__":
+    main()

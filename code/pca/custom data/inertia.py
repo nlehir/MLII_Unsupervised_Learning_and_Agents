@@ -4,33 +4,10 @@
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from orthogonal_projection import orthogonal_projection
 
 
-def orthogonal_projection(vector, axis):
-    inner_product = np.dot(vector, axis)
-    projected_vector = inner_product * axis
-    return projected_vector
-
-
-# load and center the data
-data = np.load("data.npy")
-x_data = data[:, 0]
-y_data = data[:, 1]
-x_mean = np.mean(x_data)
-y_mean = np.mean(y_data)
-
-# center the data
-x_data = x_data - np.mean(x_data)
-y_data = y_data - np.mean(y_data)
-data = np.column_stack((x_data, y_data))
-
-# plot the centered data
-plt.plot(x_data, y_data, "o", color="olivedrab", markersize="3")
-plt.title("centered data")
-plt.savefig("images/centered data.pdf")
-
-
-def test_axis(axis: np.ndarray, x_data: np.ndarray, y_data: np.ndarray):
+def test_axis(axis: np.ndarray, data: np.ndarray):
     """
     Evaluates the inertia
     of the dataset related to an axis.
@@ -42,11 +19,10 @@ def test_axis(axis: np.ndarray, x_data: np.ndarray, y_data: np.ndarray):
 
     u must be nonzero.
     """
-    print(f"test axis: {axis}")
+    x_data = data[:, 0]
+    y_data = data[:, 1]
     # normalize the axis
     axis = 1 / np.linalg.norm(axis) * axis
-    # check if vector is normed
-    # print(np.linalg.norm(axis))
 
     # plot the data
     plt.plot(x_data, y_data, "o", color="olivedrab", markersize="3")
@@ -62,21 +38,31 @@ def test_axis(axis: np.ndarray, x_data: np.ndarray, y_data: np.ndarray):
         label="axis",
     )
 
-    # project each datapoint to the chosen axis
-    # and compute the inertia due to this point.
-    nb_datapoints = x_data.shape[0]
-    inertia = 0
-    for sample_index in range(nb_datapoints):
-        vector = data[sample_index, :]
-        projected_vector = orthogonal_projection(vector, axis)
-        # check orthogonality
-        # print(np.dot(axis, vector-projected_vector))
+    nb_datapoints = len(data)
 
+    """
+    project each datapoint to the chosen axis
+    and compute the inertia due to this point.
+    """
+
+    """
+    vectorized method
+    add lines here
+    """
+
+    """
+    iterative method
+    (to complete)
+    """
+    inertia = 0
+    for datapoint_index in range(nb_datapoints):
+        vector = data[datapoint_index, :]
+        projected_vector = orthogonal_projection(vector, axis)
         # compute the inertia due to this sample
         """
         add lines here
         """
-        inertia += 1
+
 
         # plot the projection
         plt.plot(
@@ -88,7 +74,7 @@ def test_axis(axis: np.ndarray, x_data: np.ndarray, y_data: np.ndarray):
         )
 
     inertia /= nb_datapoints
-    print(f"inertia: {inertia:.3f}\n")
+
 
     plt.title(f"axis=({axis[0]:.2f}, {axis[1]:.2f}) \ninertia = {inertia:.2f}")
     plt.xlim([-10, 10])
@@ -99,32 +85,32 @@ def test_axis(axis: np.ndarray, x_data: np.ndarray, y_data: np.ndarray):
     plt.close()
 
 
-if __name__ == "__main__":
+def main() -> None:
+    # load and center the data
+    data = np.load("data.npy")
+    x_data = data[:, 0]
+    y_data = data[:, 1]
+    x_data = x_data - np.mean(x_data)
+    y_data = y_data - np.mean(y_data)
+    data = np.column_stack((x_data, y_data))
+
+    # plot the centered data
+    plt.plot(x_data, y_data, "o", color="olivedrab", markersize="3")
+    plt.title("centered data")
+    plt.savefig("images/centered data.pdf")
+
     # choose axes and compute the inertia
-    axis = np.array([3, 1])
-    test_axis(
-        axis,
-        x_data,
-        y_data,
-    )
+    axes = [
+            np.array([3, 1]),
+            np.array([1, -2]),
+            np.array([0.1, -2]),
+            np.array([-2.5, 8]),
+            ]
+    for axis in axes:
+        test_axis(
+            axis=axis,
+            data=data,
+        )
 
-    axis = np.array([1, -2])
-    test_axis(
-        axis,
-        x_data,
-        y_data,
-    )
-
-    axis = np.array([0.1, -2])
-    test_axis(
-        axis,
-        x_data,
-        y_data,
-    )
-
-    axis = np.array([-2.5, 8])
-    test_axis(
-        axis,
-        x_data,
-        y_data,
-    )
+if __name__ == "__main__":
+    main()

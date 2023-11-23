@@ -5,6 +5,7 @@
     # TODO: improve <01-12-22, nlehir> #
 """
 import os
+from pandas import core
 from sklearn.datasets import load_digits
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -12,85 +13,113 @@ from sklearn.decomposition import PCA
 import numpy as np
 
 
-def plot_pca_components(
+def reconstruct_sample(
     x: np.ndarray,
-    coefficients=None,
-    mean=0,
-    components=None,
-    imshape=(8, 8),
-    n_components=8,
-    fontsize=12,
-    show_mean=True,
-) -> None:
-    if coefficients is None:
-        coefficients = x
-
-    if components is None:
-        components = np.eye(len(coefficients), len(x))
-
-    mean = np.zeros_like(x) + mean
+    components: np.ndarray,
+    mean: np.ndarray,
+    coefficients: np.ndarray,
+    n_components: int,
+):
+    FONTSIZE = 12
+    FONTSIZE_SMALL = 3 * FONTSIZE // 4
 
     fig = plt.figure(figsize=(1.2 * (5 + n_components), 1.2 * 2))
-    g = plt.GridSpec(2, 4 + bool(show_mean) + n_components, hspace=0.3)
+    g = plt.GridSpec(nrows=2, ncols=5 + n_components, hspace=0.3)
 
-    def show(i, j, x, title=None):
+    def show(i, j, x, title=None, fontsize=FONTSIZE):
         ax = fig.add_subplot(g[i, j], xticks=[], yticks=[])
-        ax.imshow(x.reshape(imshape), interpolation="nearest")
+        ax.imshow(x.reshape((8, 8)), interpolation="nearest")
         if title:
             ax.set_title(title, fontsize=fontsize)
 
-    show(slice(2), slice(2), x, "Sample")
+    show(i=slice(2), j=slice(2), x=x, title="Sample")
 
-    approx = mean.copy()
+    """
+    Start the reconstruction of the original image
+    """
+    reconstruction = mean.copy()
 
-    counter = 2
-    if show_mean:
-        show(0, 2, np.zeros_like(x) + mean, r"$\mu$")
-        show(1, 2, approx, r"$1 \cdot \mu$")
-        counter += 1
+    show(i=0, j=2, x=reconstruction, title="mean", fontsize=FONTSIZE_SMALL)
+    show(i=1, j=2, x=reconstruction, title="1 . mean", fontsize=FONTSIZE_SMALL)
 
+    """
+    Iteratively add components to the reconstruction
+    """
     for i in range(n_components):
-        approx = approx + coefficients[i] * components[i]
-        show(0, i + counter, components[i], r"$c_{0}$".format(i + 1))
+        reconstruction = reconstruction + coefficients[i] * components[i]
         show(
-            1,
-            i + counter,
-            approx,
-            r"${0:.2f} \cdot c_{1}$".format(coefficients[i], i + 1),
+            i=0,
+            j=i + 3,
+            x=components[i],
+            title=f"c_{i}",
+            fontsize=FONTSIZE_SMALL,
         )
-        if show_mean or i > 0:
-            plt.gca().text(
-                0,
-                1.05,
-                "$+$",
-                ha="right",
-                va="bottom",
-                transform=plt.gca().transAxes,
-                fontsize=fontsize,
-            )
+        show(
+            i=1,
+            j=i + 3,
+            x=reconstruction,
+            title=f"{coefficients[i]:.2f} . c_{i+1}",
+            fontsize=FONTSIZE_SMALL,
+        )
+        plt.gca().text(
+            0,
+            1.05,
+            "$+$",
+            ha="right",
+            va="bottom",
+            transform=plt.gca().transAxes,
+            fontsize=FONTSIZE,
+        )
 
-    show(slice(2), slice(-2, None), approx, "Reconstruction")
+    show(i=slice(2), j=slice(-2, None), x=reconstruction, title="Reconstruction")
     return fig
 
 
-if __name__ == "__main__":
-    # load data
-    digits = load_digits()
-    # perform PCA
-    # and project the data
-    # on the principal components
-    nb_components = 8
-    pca = PCA(n_components=nb_components)
-    Xproj = pca.fit_transform(digits.data)
-    sns.set_style("white")
-    # plot the projected components and the reconstruction
-    data_index = 12
-    fig = plot_pca_components(
-        digits.data[data_index],
-        Xproj[data_index],
-        pca.mean_,
-        pca.components_,
+def process_sample(
+    data_index: int,
+    nb_components: int,
+    pca,
+    digits,
+    projected_dataset: np.ndarray,
+) -> None:
+    print(f"process sample {data_index}")
+    sample = digits.data[data_index]
+    projected_sample = projected_dataset[data_index]
+
+    fig = reconstruct_sample(
+        x=sample,
+        coefficients=projected_sample,
+        mean=pca.mean_,
+        components=pca.components_,
         n_components=nb_components,
     )
-    figpath = os.path.join("images", f"reconstruction_{data_index}_{nb_components}.pdf")
-    fig.savefig(figpath)
+    figpath = os.path.join("images", "reconstruction", f"sample_{data_index}_{nb_components}_components.pdf")
+    plt.savefig(figpath)
+
+
+def main() -> None:
+    """
+    perform PCA
+    project and plot the data
+    on the principal components
+    """
+    digits = load_digits()
+
+    NB_COMPONENTS_LIST = [5, 10, 15, 20]
+    DATA_INDEX_LIST = [30, 40, 2, 25]
+    for nb_components in NB_COMPONENTS_LIST:
+        pca = PCA(n_components=nb_components)
+        projected_dataset = pca.fit_transform(digits.data)
+        print(f"{nb_components} components")
+        for data_index in DATA_INDEX_LIST:
+            process_sample(
+                data_index=data_index,
+                nb_components=nb_components,
+                pca=pca,
+                digits=digits,
+                projected_dataset=projected_dataset,
+            )
+
+
+if __name__ == "__main__":
+    main()
