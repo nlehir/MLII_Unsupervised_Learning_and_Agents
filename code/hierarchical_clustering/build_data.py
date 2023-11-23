@@ -12,9 +12,9 @@ std_1 = 0.5
 std_2 = 1
 std_3 = 2
 
-std_1 = 0.05
-std_2 = 0.1
-std_3 = 0.2
+# std_1 = 0.05
+# std_2 = 0.1
+# std_3 = 0.2
 
 group_1 = np.random.normal(mean_1, std_1, (nb_persons_1, 2))
 group_2 = np.random.normal(mean_2, std_2, (nb_persons_2, 2))
