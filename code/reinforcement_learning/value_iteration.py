@@ -5,7 +5,8 @@ Perform the value iteration algorithm in a simple world
 import os
 import numpy as np
 import random
-import matplotlib.pyplot as plt
+from plots import plot_position, plot_value_function
+from utils import clean
 
 image_folder = os.path.join("images", "value_iteration")
 
@@ -19,17 +20,12 @@ reward_path = os.path.join("data", "reward.npy")
 reward = np.load(reward_path)
 
 # set discount factor
-gamma = 0.8
+GAMMA = 0.8
 
 # initialize value function and reward
 value_function = np.zeros(world.shape)
 # the reward from the point of view of the agent
 known_reward = np.zeros(world.shape)
-
-
-def clean(directory):
-    for filename in os.listdir(directory):
-        os.remove(os.path.join(directory, filename))
 
 
 def pick_random_position(available_positions: np.ndarray) -> tuple[int, int]:
@@ -42,36 +38,6 @@ def pick_random_position(available_positions: np.ndarray) -> tuple[int, int]:
     j_coordinate = available_positions[1][random_index]
     return i_coordinate, j_coordinate
 
-
-def plot_position(
-    agent_position: tuple[int, int],
-    world: np.ndarray,
-    step: int,
-) -> None:
-    """
-    plot the agent in its environment
-    """
-    title = f"position of agent at step {step}"
-    world_copy = np.copy(world)
-    world_copy[agent_position[0], agent_position[1]] = 3
-    plt.imshow(world_copy)
-    plt.title(title)
-    figpath = os.path.join(image_folder, f"agent_position_step_{step}.pdf")
-    plt.savefig(figpath)
-    plt.close()
-
-
-def plot_value_function(value_function: np.ndarray, step: int) -> None:
-    """
-    plot the value function while we compute it
-    """
-    title = f"value function at step {step}"
-    plt.imshow(value_function)
-    plt.colorbar()
-    plt.title(title)
-    figpath = os.path.join(image_folder, f"value_function_step_{step}.pdf")
-    plt.savefig(figpath)
-    plt.close()
 
 
 def new_position_available(new_position: tuple[int, int], world: np.ndarray) -> bool:
@@ -92,7 +58,7 @@ def move_agent(agent_position: tuple[int, int], world: np.ndarray):
     # boolean representing if we moved the agent
     moved_agent = False
     """
-    add lines here
+    EDIT THIS FUNCTION
     """
     new_position = agent_position
     return new_position
@@ -103,6 +69,8 @@ def update_value_function(
 ) -> np.ndarray:
     """
     Update the value function according to the Bellman equation
+
+    EDIT THIS FUNCTION
     """
     return value_function
 

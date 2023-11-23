@@ -4,6 +4,7 @@ value by Value iteration
 """
 
 import os
+from pydoc import doc
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,37 +32,10 @@ def pick_new_position(
 ) -> tuple[int, int]:
     """
     policy: choose the bet action based on the value function
-    """
-    i = agent_position[0]
-    j = agent_position[1]
-    possible_actions = {
-        "left": value_function[i, j - 1],
-        "top": value_function[i - 1, j],
-        "right": value_function[i, j + 1],
-        "bottom": value_function[i + 1, j],
-    }
-    current_value = value_function[i, j]
-    if max(possible_actions.values()) > current_value:
-        print(f"agent moves : current value {current_value}")
-        sorted_actions = sorted(
-            possible_actions, key=lambda action: possible_actions[action], reverse=True
-        )
-        if sorted_actions[0] == "left":
-            new_position = [agent_position[0], agent_position[1] - 1]
-        elif sorted_actions[0] == "top":
-            new_position = [agent_position[0] - 1, agent_position[1]]
-        elif sorted_actions[0] == "right":
-            new_position = [agent_position[0], agent_position[1] + 1]
-        elif sorted_actions[0] == "bottom":
-            new_position = [agent_position[0] + 1, agent_position[1]]
-        # move the agent
-        chosen_action = sorted_actions[0]
-        print(f"action: {chosen_action}")
-        print(f"new state value: {possible_actions[chosen_action]}")
-        return new_position
-    else:
-        return agent_position
 
+    Add lines here
+    """
+    return agent_position
 
 def plot_position(step, travel, agent_position, world):
     title = f"position of agent at step {step}"
