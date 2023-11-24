@@ -25,7 +25,7 @@ def compute_kl_divergence(mean, std, data, bins, nbins: int):
 
     # plot the histogram of the empirical data
     # to visually compare the two sample sets (empirical vs model)
-    data_hist, bins, _ = plt.hist(data, bins=bins, alpha=0.4, label="data")
+    data_hist, _, _ = plt.hist(data, bins=bins, alpha=0.4, label="data")
 
     # we will compute the KL divergence, but before we will
     # cheat and add artificial samples to each value.
