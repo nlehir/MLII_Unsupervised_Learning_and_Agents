@@ -88,14 +88,8 @@ def test_axis(axis: np.ndarray, data: np.ndarray):
 def main() -> None:
     # load and center the data
     data = np.load("data.npy")
-    x_data = data[:, 0]
-    y_data = data[:, 1]
-    x_data = x_data - np.mean(x_data)
-    y_data = y_data - np.mean(y_data)
-    data = np.column_stack((x_data, y_data))
-
-    # plot the centered data
-    plt.plot(x_data, y_data, "o", color="olivedrab", markersize="3")
+    data = data - data.mean(axis=0)
+    plt.plot(data[0], data[1], "o", color="olivedrab", markersize="3")
     plt.title("centered data")
     plt.savefig("images/centered data.pdf")
 

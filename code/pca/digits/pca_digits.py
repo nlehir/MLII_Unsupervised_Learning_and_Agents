@@ -26,6 +26,13 @@ def main() -> None:
         alpha=0.5,
         cmap=plt.cm.get_cmap("jet", 10),
     )
+    title = (
+            "Digits projected on 2 dimensions"
+            " after PCA\n"
+            "the colors correspond to the labels"
+            " but are not used by the PCA"
+            )
+    plt.title(title, fontsize=9)
     plt.xlabel("component 1")
     plt.ylabel("component 2")
     plt.colorbar()
