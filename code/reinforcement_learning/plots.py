@@ -1,6 +1,8 @@
-import numpy as np
 import os
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 def plot_position(
     agent_position: tuple[int, int],
@@ -22,10 +24,10 @@ def plot_position(
 
 
 def plot_value_function(
-        value_function: np.ndarray,
-        step: int, 
-        image_folder,
-        ) -> None:
+    value_function: np.ndarray,
+    step: int,
+    image_folder,
+) -> None:
     """
     plot the value function while we compute it
     """

@@ -1,52 +1,15 @@
-"""
-Perform the value iteration algorithm in a simple world
-"""
-
 import os
-import numpy as np
 import random
+
+import numpy as np
+
 from plots import plot_position, plot_value_function
-from utils import clean
-
-image_folder = os.path.join("images", "value_iteration")
-
-# load world
-world_path = os.path.join("data", "world.npy")
-world = np.load(world_path)
-available_positions = np.where(world)
-
-# load reward
-reward_path = os.path.join("data", "reward.npy")
-reward = np.load(reward_path)
+from utils import clean, pick_random_position, update_known_rewards
 
 # set discount factor
 GAMMA = 0.8
-
-# initialize value function and reward
-value_function = np.zeros(world.shape)
-# the reward from the point of view of the agent
-known_reward = np.zeros(world.shape)
-
-
-def pick_random_position(available_positions: np.ndarray) -> tuple[int, int]:
-    """
-    pick a random position in order to initialize the position of our agent
-    """
-    number_of_available_positions = available_positions[0].shape[0]
-    random_index = random.randint(0, number_of_available_positions - 1)
-    i_coordinate = available_positions[0][random_index]
-    j_coordinate = available_positions[1][random_index]
-    return i_coordinate, j_coordinate
-
-
-
-def new_position_available(new_position: tuple[int, int], world: np.ndarray) -> bool:
-    """
-    check if the position new_position is compatible with
-    the world we created
-    """
-    # in python, this can be interpreted as a boolean
-    return world[new_position[0], new_position[1]]
+# set the number of exploration steps
+N_STEPS = 200
 
 
 def move_agent(agent_position: tuple[int, int], world: np.ndarray):
@@ -65,7 +28,9 @@ def move_agent(agent_position: tuple[int, int], world: np.ndarray):
 
 
 def update_value_function(
-    value_function: np.ndarray, known_reward: np.ndarray
+    value_function: np.ndarray,
+    known_reward: np.ndarray,
+    world: np.ndarray,
 ) -> np.ndarray:
     """
     Update the value function according to the Bellman equation
@@ -75,34 +40,53 @@ def update_value_function(
     return value_function
 
 
-if __name__ == "__main__":
+def main() -> None:
+    # load world and reward
+    world_path = os.path.join("data", "world.npy")
+    world = np.load(world_path)
+    reward_path = os.path.join("data", "reward.npy")
+    reward = np.load(reward_path)
+
+    # initialize stuff
+    value_function = np.zeros(world.shape)
+    known_reward = np.zeros(world.shape)
+    available_positions = np.where(world)[0]
     agent_position = pick_random_position(available_positions)
+
+    # set image folder
+    image_folder = os.path.join("images", "value_iteration")
     clean(image_folder)
-    for step in range(200):
+
+    # explore the world and update the value function
+    for step in range(N_STEPS):
         print(f"step {step} : agent position {agent_position}")
-        plot_position(agent_position, world, step)
+        plot_position(agent_position, world, step, image_folder=image_folder)
 
         # move the agent randomly
         agent_position = move_agent(agent_position, world)
 
-        # cherck if there is a reward at that position
-        obtained_reward = reward[agent_position[0], agent_position[1]]
-        if obtained_reward:
-            if not known_reward[agent_position[0], agent_position[1]]:
-                print(
-                    f"----- found reward in position {agent_position}: {obtained_reward}"
-                )
-                known_reward[agent_position[0], agent_position[1]] = obtained_reward
+        known_reward = update_known_rewards(
+            reward=reward,
+            known_reward=known_reward,
+            agent_position=agent_position,
+        )
 
-        # update the value function with the Bellmann equation
-        value_function = update_value_function(value_function, known_reward)
-        plot_value_function(value_function, step)
+        value_function = update_value_function(
+            value_function=value_function,
+            known_reward=known_reward,
+            world=world,
+        )
+        plot_value_function(value_function, step, image_folder=image_folder)
 
         # periodically reinitialize the position of the agent.
-        if step % 15 == 0:
+        if (step % 15 == 0) and (step > 0):
             print("----- re initialize agent position")
             agent_position = pick_random_position(available_positions)
 
-    # safe our evaluation for usage later
+    # save our evaluation for usage later
     value_function_path = os.path.join("data", "value_function.npy")
     np.save(value_function_path, value_function)
+
+
+if __name__ == "__main__":
+    main()
