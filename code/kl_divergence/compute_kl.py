@@ -9,19 +9,20 @@ import numpy as np
 
 
 
-def compute_kl_divergence(mean, std, data, bins, nbins: int):
+def compute_kl_divergence(mean, std, data, bins):
     """
-    we will use normal models in this example
+    We will use gaussian models in this example
     """
     # sample new data from our model
     # we will compare them to the empirical set
     n_samples = len(data)
-    model_sample = np.random.normal(mean, std, n_samples)
+    rng = np.random.default_rng()
+    model_sample = rng.normal(mean, std, n_samples)
 
     # Compute the histogram of data sampled from your model
     # we must use the same bins as the empirical distribution
     # in order to compare the distributions
-    model_hist, _, _ = plt.hist(model_sample, bins=nbins, alpha=0.4, label="model")
+    model_hist, _, _ = plt.hist(model_sample, bins=bins, alpha=0.4, label="model")
 
     # plot the histogram of the empirical data
     # to visually compare the two sample sets (empirical vs model)
@@ -74,8 +75,7 @@ def main() -> None:
     """
     Try models with different parameters
     """
-    compute_kl_divergence(mean=35, std=5, data=data, bins=bins, nbins=NBINS)
-    compute_kl_divergence(mean=35, std=3, data=data, bins=bins, nbins=NBINS)
+    compute_kl_divergence(mean=35, std=3, data=data, bins=bins)
 
 
 if __name__ == "__main__":
