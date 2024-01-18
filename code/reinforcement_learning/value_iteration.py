@@ -4,7 +4,7 @@ import random
 import numpy as np
 
 from plots import plot_position, plot_value_function
-from utils import clean, pick_random_position, update_known_rewards
+from utils import clean, pick_random_position, update_known_rewards, load_data
 
 # set discount factor
 GAMMA = 0.8
@@ -14,15 +14,14 @@ N_STEPS = 200
 
 def move_agent(agent_position: tuple[int, int], world: np.ndarray):
     """
+    EDIT THIS FUNCTION
+
     determine a new position for the agent (randomly),
     in order to continue the exploration of the environment,
     possibly to find rewards at new positions.
     """
     # boolean representing if we moved the agent
     moved_agent = False
-    """
-    EDIT THIS FUNCTION
-    """
     new_position = agent_position
     return new_position
 
@@ -33,21 +32,17 @@ def update_value_function(
     world: np.ndarray,
 ) -> np.ndarray:
     """
-    Update the value function according to the Bellman equation
-
     EDIT THIS FUNCTION
+
+    Update the value function according to the Bellman equation
     """
     return value_function
 
 
 def main() -> None:
-    # load world and reward
-    world_path = os.path.join("data", "world.npy")
-    world = np.load(world_path)
-    reward_path = os.path.join("data", "reward.npy")
-    reward = np.load(reward_path)
+    world, reward = load_data()
 
-    # initialize stuff
+    # initialize quantities
     value_function = np.zeros(world.shape)
     known_reward = np.zeros(world.shape)
     available_positions = np.where(world)[0]

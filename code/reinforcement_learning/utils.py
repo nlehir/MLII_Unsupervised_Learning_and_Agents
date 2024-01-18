@@ -31,3 +31,12 @@ def update_known_rewards(
             print(f"----- found reward at position {agent_position}: {obtained_reward}")
             known_reward[agent_position[0], agent_position[1]] = obtained_reward
     return known_reward
+
+
+def load_data():
+    # load world and reward
+    world_path = os.path.join("data", "world.npy")
+    world = np.load(world_path)
+    reward_path = os.path.join("data", "reward.npy")
+    reward = np.load(reward_path)
+    return world, reward
