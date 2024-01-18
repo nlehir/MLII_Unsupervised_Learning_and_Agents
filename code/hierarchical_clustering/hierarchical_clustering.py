@@ -26,29 +26,11 @@ with open(file_name, "r") as f:
 x_coordinates = np.asarray(x_coordinates)
 y_coordinates = np.asarray(y_coordinates)
 data = np.column_stack((x_coordinates, y_coordinates))
+nb_datapoints = len(data)
 
 """
-    Part A : show a scatter plot of the data
+    Show a scatter plot of the data
 """
-# # first method manual plot
-nb_datapoints = x_coordinates.shape[0]
-for datapoint in range(nb_datapoints):
-    plt.plot(x_coordinates[datapoint], y_coordinates[datapoint], "o")
-plt.title("scatter plot of addresses")
-plt.xlabel("x coordinate")
-plt.ylabel("y coordinate")
-fig_path = os.path.join("images", "scatter_plot_manual.pdf")
-plt.savefig(fig_path)
-plt.close()
-
-# second method
-plt.plot(x_coordinates, y_coordinates, "o")
-plt.title("scatter plot of addresses")
-plt.xlabel("x coordinate")
-plt.ylabel("y coordinate")
-fig_path = os.path.join("images", "scatter_plot_manual_2.pdf")
-plt.savefig(fig_path)
-plt.close()
 
 # third method : matplotlib function
 plt.scatter(x_coordinates, y_coordinates)
@@ -60,7 +42,7 @@ plt.close()
 
 
 """
-    Part B : hierarchical clustering.
+    Hierarchical clustering.
     We will use agglomerative clustering.
 """
 # choose metric
@@ -80,6 +62,8 @@ def find_closest_classes(classes: list[list], linkage: str = "single") -> tuple:
     In the list of classes, find the two closest classes
 
     :param classes (list): list of clsses
+    :param linkage: choice of the linkage method (single, average, etc)
+
     :returns returned_classes (tuple): two closest classes
     """
     min_dist = np.max(distance_matrix)
@@ -88,43 +72,6 @@ def find_closest_classes(classes: list[list], linkage: str = "single") -> tuple:
     add lines here
     """
     return returned_classes
-
-
-def distance_between_classes_single_linkage(class_1: list, class_2: list) -> float:
-    """
-    single linkage clustering.
-    The distance is the minimum distance between
-    any point in class_1 and any point in class_2
-
-    :param class_1 (list): list of houses
-    :param class_2 (list): list of houses
-    :returns min_dist: minimum disance between points between the two
-    classes
-    """
-    min_dist = np.max(distance_matrix)
-    """
-    add lines here
-    """
-    return min_dist
-
-
-def distance_between_classes_average_linkage(class_1: list, class_2: list) -> float:
-    """
-    average linkage clustering
-    The distance is the average of distances between
-    apoint in class_1 a point in class_2
-
-    :param class_1 (list): list of houses
-    :param class_2 (list): list of houses
-    :returns average_distances: minimum average between points between the two
-    classes
-    """
-    min_dist = np.max(distance_matrix)
-    average_distances = min_dist
-    """
-    add lines here
-    """
-    return average_distances
 
 
 def plot_clustering(step: int, classes: list[list], linkage: str) -> None:
