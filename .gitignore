@@ -27,7 +27,7 @@ classification
 regression
 
 code/arch/
-code/solutions/
+# code/solutions/
 
 code/make_exercises.sh
 code/exercises/
@@ -36,7 +36,11 @@ code/reinforcement_learning/images/value_iteration/*pdf
 code/reinforcement_learning/images/value_iteration_policy/*pdf
 code/solutions/reinforcement_learning/images/value_iteration/*pdf
 code/solutions/reinforcement_learning/images/value_iteration_policy/*pdf
-code/solutions/hierarchical_clustering/clustering/*.pdf
+code/solutions/hierarchical_clustering/clusterings/*.pdf
+code/solutions/hierarchical_clustering/images/*.pdf
+code/solutions/k_means/images/*.pdf
+code/solutions/pca/custom data/images/
+code/solutions/spectral_clustering/images/*.pdf
 
 code/pca/**/*.pdf
 code/kde/**/*.pdf
