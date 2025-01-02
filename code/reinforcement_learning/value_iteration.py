@@ -25,8 +25,6 @@ def move_agent(agent_position: tuple[int, int], world: np.ndarray):
     the 4 closest diagonal positions,
     the and also not moving
 
-    Try to use numpy in order to generate a displacement
-    with only 1 instruction !
     """
     # boolean representing if we moved the agent
     moved_agent = False
