@@ -14,6 +14,7 @@
 
 import numpy as np
 import pylab
+import matplotlib.pyplot as plt
 
 
 def Hbeta(D=np.array([]), beta=1.0):
@@ -185,6 +186,11 @@ if __name__ == "__main__":
     print("Running example on 2,500 MNIST digits...")
     X = np.loadtxt("mnist2500_X.txt")
     labels = np.loadtxt("mnist2500_labels.txt")
-    Y = tsne(X, 2, 50, 20.0)
+    n_components = 2
+    Y = tsne(X, n_components, 50, 20.0)
     pylab.scatter(Y[:, 0], Y[:, 1], 20, labels)
-    pylab.show()
+    plt.title(f"t-SNE on MNIST with {n_components} components")
+    plt.xlabel("Component 1")
+    plt.ylabel("Component 2")
+    plt.savefig(f"t_SNE_{n_components}_components.pdf")
+    plt.close()
