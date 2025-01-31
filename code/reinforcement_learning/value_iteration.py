@@ -86,6 +86,7 @@ def main() -> None:
                 step=step,
                 world=world,
                 image_folder=image_folder,
+                known_reward=known_reward,
                 )
 
         # periodically reinitialize the position of the agent.
