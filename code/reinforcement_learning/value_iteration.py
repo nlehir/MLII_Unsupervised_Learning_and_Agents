@@ -3,7 +3,7 @@ import random
 
 import numpy as np
 
-from plots import plot_position, plot_value_function
+from plots import plot_position, plot_value_function, plot_all
 from utils import clean, pick_random_position, update_known_rewards, load_data
 
 # set discount factor
@@ -51,8 +51,11 @@ def main() -> None:
     # initialize quantities
     value_function = np.zeros(world.shape)
     known_reward = np.zeros(world.shape)
-    available_positions = np.where(world)[0]
-    agent_position = pick_random_position(available_positions)
+    available_positions_i, available_positions_j = np.where(world)
+    agent_position = pick_random_position(
+            available_positions_i,
+            available_positions_j,
+            )
 
     # set image folder
     image_folder = os.path.join("images", "value_iteration")
@@ -61,7 +64,6 @@ def main() -> None:
     # explore the world and update the value function
     for step in range(N_STEPS):
         print(f"step {step} : agent position {agent_position}")
-        plot_position(agent_position, world, step, image_folder=image_folder)
 
         # move the agent randomly
         agent_position = move_agent(agent_position, world)
@@ -77,12 +79,23 @@ def main() -> None:
             known_reward=known_reward,
             world=world,
         )
-        plot_value_function(value_function, step, image_folder=image_folder)
+
+        plot_all(
+                agent_position=agent_position,
+                value_function=value_function,
+                step=step,
+                world=world,
+                image_folder=image_folder,
+                )
 
         # periodically reinitialize the position of the agent.
         if (step % 15 == 0) and (step > 0):
             print("----- re initialize agent position")
-            agent_position = pick_random_position(available_positions)
+            agent_position = pick_random_position(
+                    available_positions_i,
+                    available_positions_j,
+                    )
+
 
     # save our evaluation for usage later
     value_function_path = os.path.join("data", "value_function.npy")
