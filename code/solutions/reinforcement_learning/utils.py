@@ -9,14 +9,17 @@ def clean(directory):
         os.remove(os.path.join(directory, filename))
 
 
-def pick_random_position(available_positions: np.ndarray) -> tuple[int, int]:
+def pick_random_position(
+        available_positions_i: np.ndarray,
+        available_positions_j: np.ndarray,
+        ) -> tuple[int, int]:
     """
     pick a random position in order to initialize the position of our agent
     """
-    number_of_available_positions = available_positions.shape[0]
+    number_of_available_positions = available_positions_i.shape[0]
     random_index = random.randint(0, number_of_available_positions - 1)
-    i_coordinate = available_positions[random_index]
-    j_coordinate = available_positions[random_index]
+    i_coordinate = available_positions_i[random_index]
+    j_coordinate = available_positions_j[random_index]
     return i_coordinate, j_coordinate
 
 
