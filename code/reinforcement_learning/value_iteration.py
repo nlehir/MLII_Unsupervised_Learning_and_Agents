@@ -47,7 +47,7 @@ def update_value_function(
 def main() -> None:
     world, reward = load_data()
 
-    # initialize stuff
+    # initialize quantities
     value_function = np.zeros(world.shape)
     known_reward = np.zeros(world.shape)
     available_positions_i, available_positions_j = np.where(world)
