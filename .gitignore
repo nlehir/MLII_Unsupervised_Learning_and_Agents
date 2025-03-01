@@ -58,3 +58,5 @@ code/kde/*.pdf
 code/project/
 
 slides/template.pdf
+
+code/solutions/reinforcement_learning/data/value_function.npy
